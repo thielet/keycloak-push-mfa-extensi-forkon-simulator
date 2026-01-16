@@ -48,13 +48,13 @@ onReady(() => {
       formData.append('token', _token);
       if (_context) formData.append('context', _context);
       formData.append(
-        '_iamUrl',
+        'iamUrl',
         _iamUrl
-          ? _iamUrl.toString() + '/push-mfa/enroll/complete'
-          : 'http://localhost:8080/realms/demo/push-mfa/enroll/complete'
+          ? _iamUrl.toString()
+          : 'http://localhost:8080/realms/demo'
       );
 
-      const response = await fetch('/enroll/complete', {
+      const response = await fetch('./enroll/complete', {
         method: 'POST',
         body: formData,
       });

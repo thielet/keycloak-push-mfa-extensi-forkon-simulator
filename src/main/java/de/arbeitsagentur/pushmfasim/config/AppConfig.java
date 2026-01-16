@@ -11,8 +11,8 @@ import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 public class AppConfig {
 
     @Bean
-    public ThymeleafViewResolver thymeleafViewResolver(@Autowired SpringTemplateEngine templateEngine,
-                                                       @Value("${app.basepath}") String basePath) {
+    public ThymeleafViewResolver thymeleafViewResolver(
+            @Autowired SpringTemplateEngine templateEngine, @Value("${app.basepath}") String basePath) {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
         thymeleafViewResolver.setTemplateEngine(templateEngine);
         thymeleafViewResolver.setCharacterEncoding("UTF-8");

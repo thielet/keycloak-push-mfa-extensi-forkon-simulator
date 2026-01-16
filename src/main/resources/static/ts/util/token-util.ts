@@ -33,7 +33,7 @@ export type EnrollmentValues = {
 
 export type ConfirmLoginValues = {
   challengeId: string;
-  userId: string;
+  credId: string;
   userVerification?: string;
 };
 
@@ -84,20 +84,25 @@ export function unpackLoginConfirmToken(token: string): ConfirmLoginValues | nul
   const confirmPayload = decodeJwt(token) as Record<string, unknown>;
 
   const challengeId = confirmPayload.cid as string | undefined;
-  const userId = confirmPayload.credId as string | undefined;
+  const credId = confirmPayload.credId as string | undefined;
 
-  if (!challengeId || !userId) {
+  if (!challengeId || !credId) {
     return null;
   }
-  return { challengeId, userId };
+  return { challengeId, credId };
 }
 
 export function extractUserIdFromCredentialId(credentialId: string): string | null {
+  if (!credentialId) {
+    return null;
+  }
+
   const aliasIndex = credentialId.indexOf(DEVICE_ALIAS);
   if (aliasIndex < 0) {
     return null;
   }
-  return credentialId.slice(aliasIndex + DEVICE_ALIAS.length);
+  const userId = credentialId.slice(0, aliasIndex);
+  return userId.length > 0 ? userId : null;
 }
 
 export async function createDpopProof(credentialId: string, method: string, htu: string) {

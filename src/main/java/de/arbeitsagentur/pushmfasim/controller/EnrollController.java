@@ -12,7 +12,6 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import com.nimbusds.jwt.SignedJWT;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

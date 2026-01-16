@@ -23,8 +23,8 @@ onReady(() => {
   const iamUrlEl = getById<HTMLInputElement>('iam-url');
   const messageEl = getById<HTMLElement>('message');
   const actionEl = getById<HTMLSelectElement>('action');
-  const contextEl = getById<HTMLSelectElement>('context');
-  const userVerificationEl = getById<HTMLSelectElement>('userVerification');
+  const contextEl = getById<HTMLInputElement>('context');
+  const userVerificationEl = getById<HTMLInputElement>('userVerification');
 
   tokenEl.value = qs.get('token') ?? '';
   iamUrlEl.value = qs.get('url') ?? '';
@@ -55,11 +55,11 @@ onReady(() => {
       formData.append('token', _token);
       if (_context) formData.append('context', _context);
       formData.append(
-        '_iamUrl',
+        'iamUrl',
         _iamUrl ? _iamUrl.toString() : 'http://localhost:8080/realms/demo'
       );
 
-      const response = await fetch('/confirm/login', {
+      const response = await fetch('./confirm/login', {
         method: 'POST',
         body: formData,
       });
@@ -104,7 +104,7 @@ onReady(() => {
         _context
       );
 
-      const credentialId = confirmValues.userId;
+      const credentialId = confirmValues.credId;
       const challengeId = confirmValues.challengeId;
       const userId = extractUserIdFromCredentialId(credentialId);
 
