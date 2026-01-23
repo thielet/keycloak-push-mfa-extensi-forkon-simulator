@@ -401,3 +401,22 @@ To support local development, Docker, and reverse-proxy setups safely, the confi
 
 Frontend configuration via thymeleaf
 Backend configuration via Spring Boot (secrets via environment variables or config files)
+
+## Firebase backend Mock
+
+This mocks the firebase fcm googleapis enpoints for testing purpose.
+
+### Preconditions 
+- A implemented and configured Firebase FCM Provider in keycloak with ID "fcm"
+- Enrollment done with Provider Type "fcm"
+
+### Endpoints
+
+*/fcm/token*
+getting an access token 
+
+*/fcm/messages:send*
+sending a push message
+
+*/fcm/credentials*
+provide mock service account credentials
