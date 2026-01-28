@@ -2,6 +2,7 @@ import { getById, onReady } from '../shared.js';
 import { createNewKeyPair } from '../util/keys-util.js';
 import { createEnrollmentJwt, unpackEnrollmentToken } from '../util/token-util.js';
 import { postEnrollComplete } from '../util/http-util.js';
+import { initializeSseListener } from '../util/sse-util.js';
 
 onReady(() => {
   const qs = new URLSearchParams(location.search);
@@ -126,4 +127,5 @@ onReady(() => {
       outEl.textContent = 'Error: ' + (e instanceof Error ? e.message : String(e));
     }
   });
+  initializeSseListener();
 });

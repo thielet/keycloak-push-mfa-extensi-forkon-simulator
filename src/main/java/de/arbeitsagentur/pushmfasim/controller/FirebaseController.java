@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.arbeitsagentur.pushmfasim.model.FcmMessageRequest;
 import de.arbeitsagentur.pushmfasim.model.FcmMessageResponse;
 import de.arbeitsagentur.pushmfasim.model.FcmTokenResponse;
+import de.arbeitsagentur.pushmfasim.services.SseService;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +13,11 @@ import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,10 +26,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Controller
 public class FirebaseController {
     private static final String TOKEN_VALUE_STRING = "keycloak_push_mfa_simulator_valid_assertion";
+    private static final Logger LOG = LoggerFactory.getLogger(FirebaseController.class.getName());
+
+    @Autowired
+    private SseService sseService;
 
     @PostMapping(path = "/fcm/token")
     public ResponseEntity<FcmTokenResponse> getToken(@RequestParam("assertion") String assertion) {
@@ -53,11 +64,27 @@ public class FirebaseController {
             return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(null);
         }
 
-        // ToDo Publish request as server-sent event for further processing
+        // Publish request as server-sent event for further processing
+        sseService.sendMessageToAllEmitters(request);
 
         return ResponseEntity.ok(FcmMessageResponse.builder()
                 .name("projects/ba-secure-mock/FcmMessageRequest")
                 .build());
+    }
+
+    @GetMapping("/fcm/register-sse")
+    public ResponseEntity<SseEmitter> sse() {
+        // add response headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Connection", "keep-alive");
+        headers.add("Cache-Control", "no-cache");
+        headers.add("Content-Type", "text/event-stream");
+
+        SseEmitter emitter = sseService.createSseEmitter();
+        if (emitter == null) {
+            return ResponseEntity.status(500).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(emitter);
     }
 
     @GetMapping("/fcm/credentials")
@@ -73,7 +100,7 @@ public class FirebaseController {
             return ResponseEntity.ok(
                     new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(credentials));
         } catch (JsonProcessingException ex) {
-            System.getLogger(FirebaseController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            LOG.error("Error on creating mock credentials", ex);
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(500)).body(null);
     }
@@ -93,7 +120,7 @@ public class FirebaseController {
             pemBuilder.append("-----END PRIVATE KEY-----");
             return pemBuilder.toString();
         } catch (NoSuchAlgorithmException ex) {
-            System.getLogger(FirebaseController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            LOG.error("Error on generating mock private key", ex);
         }
         return null;
     }

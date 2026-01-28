@@ -15,9 +15,11 @@
       window.ENV.clientId = clientId;
       const clientSecret = /*[[${clientSecret}]]*/ '';
       window.ENV.clientSecret = clientSecret;
+      const basePath = /*[[@{/}]]*/ '';
+      window.ENV.basepath = basePath;
     </script>
   </head>
-  <body>
+  <body>    
     <!-- ************************************************************************************** -->
     <nav class="navbar navbar-dark mb-4" data-th-fragment="navbar">
       <div class="container">

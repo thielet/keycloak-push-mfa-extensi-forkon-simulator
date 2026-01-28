@@ -11,6 +11,7 @@ import {
   getPendingChallenges,
   postChallengesResponse,
 } from '../util/http-util.js';
+import { initializeSseListener } from '../util/sse-util.js';
 
 const CHALLENGE_ID = 'CHALLENGE_ID';
 
@@ -197,6 +198,7 @@ onReady(() => {
       setMessage(messageEl, 'Error: ' + (e instanceof Error ? e.message : String(e)), 'error');
     }
   });
+  initializeSseListener();
 });
 
 const firstNonBlank = (...values: Array<string | undefined | null>) => {

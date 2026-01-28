@@ -3,8 +3,10 @@
   <head data-th-insert="~{fragments/snippets :: head}"> </head>
   <script type="module" th:src="@{__${basepath}__/js/info.bundle.js}"></script>
   <body>
+    <!-- <input type="hidden" id="basepath" data-th-value="@{__${basepath}__}" /> -->
     <nav data-th-replace="~{fragments/snippets :: navbar}"></nav>
-    <div class="container">
+    <div class="container" id="push-messages"></div>
+    <div class="container" style="margin-top: 12px">
       <p class="lead">
         Welcome to the Keycloak Push MFA Extension Simulator. This tool mocks the push-based
         multi-factor authentication process for development and testing purposes.
