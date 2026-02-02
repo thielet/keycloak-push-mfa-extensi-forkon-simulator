@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -49,7 +48,7 @@ class EnrollControllerTest {
     @BeforeEach
     void setUp() throws Exception {
         // Create controller manually to inject mocks
-        enrollController = new EnrollController();
+        enrollController = new EnrollController(mock(RestTemplate.class));
 
         // Generate a test RSA key pair
         java.security.KeyPairGenerator kpg = java.security.KeyPairGenerator.getInstance("RSA");

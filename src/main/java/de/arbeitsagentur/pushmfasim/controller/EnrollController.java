@@ -41,13 +41,17 @@ public class EnrollController {
 
     private static final Logger logger = LoggerFactory.getLogger(EnrollController.class);
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     @Value("${app.jwk.path:static/keys/rsa-jwk.json}")
     private String jwkPath;
 
     @Value("${app.enroll.complete.url:http://localhost:8080/realms/demo/push-mfa/enroll/complete}")
     private String defaultIamUrl;
+
+    public EnrollController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @GetMapping
     public String showEnrollPage() {

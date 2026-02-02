@@ -231,6 +231,19 @@ curl -k https://myapp.local/realms/demo
 curl -k -v https://myapp.local/mock/info
 ```
 
+### Using a proxy for communication between the mock and keycloak
+
+Add the following properties to the application.yaml to tell the mocks Rest Template to use the http proxy with the specified host and port:
+
+### application.yaml
+
+```yaml
+proxy:
+  http:
+    host: your-proxy-host
+    port: 3182
+```
+
 ## Troubleshooting
 
 ### Network & Connectivity Issues
