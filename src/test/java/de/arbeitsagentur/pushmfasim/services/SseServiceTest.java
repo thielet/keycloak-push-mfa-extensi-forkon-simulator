@@ -3,7 +3,7 @@ package de.arbeitsagentur.pushmfasim.services;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import de.arbeitsagentur.pushmfasim.model.FcmMessageRequest;
+import de.arbeitsagentur.pushmfasim.model.FcmMessageRequestMessage;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -48,7 +48,7 @@ class SseServiceTest {
 
     @Test
     void sendMessageToAllEmitters_shouldSendToAllEmitters() throws Exception {
-        FcmMessageRequest request = new FcmMessageRequest();
+        FcmMessageRequestMessage request = new FcmMessageRequestMessage();
 
         SseEmitter emitter1 = spy(new SseEmitter(1000L));
         SseEmitter emitter2 = spy(new SseEmitter(1000L));
@@ -87,7 +87,7 @@ class SseServiceTest {
         emitters.add(spyEmitter);
         emitters.add(normalEmitter);
 
-        FcmMessageRequest request = new FcmMessageRequest();
+        FcmMessageRequestMessage request = new FcmMessageRequestMessage();
         sseService.sendMessageToAllEmitters(request);
 
         Thread.sleep(300); // Give async execution time to complete
@@ -104,7 +104,7 @@ class SseServiceTest {
 
     @Test
     void sendMessageToAllEmitters_shouldExecuteAsynchronously() throws Exception {
-        FcmMessageRequest request = new FcmMessageRequest();
+        FcmMessageRequestMessage request = new FcmMessageRequestMessage();
         long startTime = System.currentTimeMillis();
 
         sseService.sendMessageToAllEmitters(request);

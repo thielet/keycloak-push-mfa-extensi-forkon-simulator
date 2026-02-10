@@ -57,15 +57,16 @@ public class FirebaseController {
             return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(null);
         }
         if (request == null
-                || request.getToken() == null
-                || request.getNotification() == null
-                || request.getData() == null
-                || request.getData().getToken() == null) {
+                || request.getMessage() == null
+                || request.getMessage().getToken() == null
+                || request.getMessage().getNotification() == null
+                || request.getMessage().getData() == null
+                || request.getMessage().getData().getToken() == null) {
             return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(null);
         }
 
         // Publish request as server-sent event for further processing
-        sseService.sendMessageToAllEmitters(request);
+        sseService.sendMessageToAllEmitters(request.getMessage());
 
         return ResponseEntity.ok(FcmMessageResponse.builder()
                 .name("projects/ba-secure-mock/FcmMessageRequest")

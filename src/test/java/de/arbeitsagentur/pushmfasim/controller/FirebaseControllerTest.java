@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.arbeitsagentur.pushmfasim.model.FcmMessageData;
 import de.arbeitsagentur.pushmfasim.model.FcmMessageNotification;
 import de.arbeitsagentur.pushmfasim.model.FcmMessageRequest;
+import de.arbeitsagentur.pushmfasim.model.FcmMessageRequestMessage;
 import de.arbeitsagentur.pushmfasim.model.FcmMessageResponse;
 import de.arbeitsagentur.pushmfasim.model.FcmTokenResponse;
 import de.arbeitsagentur.pushmfasim.services.SseService;
@@ -58,7 +59,7 @@ class FirebaseControllerTest {
 
     @Test
     void testSendMessageWithValidAuthorization() throws Exception {
-        FcmMessageRequest request = FcmMessageRequest.builder()
+        FcmMessageRequestMessage requestMessage = FcmMessageRequestMessage.builder()
                 .token("valid_token")
                 .notification(FcmMessageNotification.builder()
                         .title("Test")
@@ -66,6 +67,8 @@ class FirebaseControllerTest {
                         .build())
                 .data(FcmMessageData.builder().token("valid_data_token").build())
                 .build();
+        FcmMessageRequest request =
+                FcmMessageRequest.builder().message(requestMessage).build();
 
         mockMvc.perform(post("/fcm/messages:send")
                         .header("Authorization", "Bearer keycloak_push_mfa_simulator_valid_assertion")
@@ -80,7 +83,7 @@ class FirebaseControllerTest {
 
     @Test
     void testSendMessageWithInvalidAuthorization() throws Exception {
-        FcmMessageRequest request = FcmMessageRequest.builder()
+        FcmMessageRequestMessage requestMessage = FcmMessageRequestMessage.builder()
                 .token("valid_token")
                 .notification(FcmMessageNotification.builder()
                         .title("Test")
@@ -88,6 +91,8 @@ class FirebaseControllerTest {
                         .build())
                 .data(FcmMessageData.builder().token("valid_data_token").build())
                 .build();
+        FcmMessageRequest request =
+                FcmMessageRequest.builder().message(requestMessage).build();
 
         mockMvc.perform(post("/fcm/messages:send")
                         .header("Authorization", "Bearer invalid_token")
