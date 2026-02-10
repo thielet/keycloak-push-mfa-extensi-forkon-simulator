@@ -1,6 +1,6 @@
 package de.arbeitsagentur.pushmfasim.services;
 
-import de.arbeitsagentur.pushmfasim.model.FcmMessageRequest;
+import de.arbeitsagentur.pushmfasim.model.FcmMessageRequestMessage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class SseService implements SmartLifecycle {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private boolean running = false;
 
-    public void sendMessageToAllEmitters(FcmMessageRequest request) {
+    public void sendMessageToAllEmitters(FcmMessageRequestMessage request) {
         executorService.execute(() -> {
             synchronized (emitters) {
                 for (SseEmitter emitter : emitters) {

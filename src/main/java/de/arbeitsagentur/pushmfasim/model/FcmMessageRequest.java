@@ -1,6 +1,5 @@
 package de.arbeitsagentur.pushmfasim.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class FcmMessageRequest {
-    @JsonProperty("token")
-    private String token;
-
-    @JsonProperty("notification")
-    private FcmMessageNotification notification;
-
-    @JsonProperty("data")
-    private FcmMessageData data;
+    private FcmMessageRequestMessage message;
 }
