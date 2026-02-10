@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.5.0...v1.5.1) (2026-02-10)
+
+
+### Bug Fixes
+
+* fcm message format ([fcba227](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/commit/fcba22708e55c0206f4c896e78beb63c413d8e1e))
+
 ## [1.5.0](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.4.0...v1.5.0) (2026-02-03)
 
 
