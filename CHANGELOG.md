@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.5.1...v1.6.0) (2026-02-11)
+
+
+### Features
+
+* **backend:** improve logging for spring controller ([b45fd30](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/commit/b45fd30a475c0fd62d18aa1a9a1f49e9ecf77774))
+
+
+### Bug Fixes
+
+* **dpop:** RFC 9449 htu dpop fix ([c5057a9](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/commit/c5057a9424371484541a5a52791699b2ff0f1b7a))
+* lint & format ([fc355c0](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/commit/fc355c05319106a243e4f4c7909253ff6744f91d))
+* remove compiler warnings ([60a2403](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/commit/60a2403aec1148d9baa31760d192db54cf9f1bdf))
+
 ## [1.5.1](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.5.0...v1.5.1) (2026-02-10)
 
 
