@@ -148,10 +148,14 @@ onReady(() => {
       const pendingUrl = new URL(_iamUrl?.toString() + LOGIN_PENDING_ENDPOINT);
       const pendingHtu = new URL(_iamUrl?.toString() + LOGIN_PENDING_ENDPOINT);
       pendingUrl.searchParams.set('userId', userId);
-      
+
       // RFC 9449: htu must exclude query and fragment parts
       const pendingDpop = await createDpopProof(credentialId, 'GET', pendingHtu.toString());
-      const pendingResponse = await getPendingChallenges(pendingUrl.toString(), pendingDpop, accessToken);
+      const pendingResponse = await getPendingChallenges(
+        pendingUrl.toString(),
+        pendingDpop,
+        accessToken
+      );
       if (!pendingResponse.ok) {
         setMessage(messageEl, `${await pendingResponse.text()}`, 'error');
         return;

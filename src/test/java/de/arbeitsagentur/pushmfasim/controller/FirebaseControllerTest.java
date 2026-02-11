@@ -43,7 +43,7 @@ class FirebaseControllerTest {
     }
 
     @SuppressWarnings("null")
-@Test
+    @Test
     void testGetTokenWithValidAssertion() throws Exception {
         mockMvc.perform(post("/fcm/token").param("assertion", "valid_assertion"))
                 .andExpect(status().isOk())
@@ -59,7 +59,7 @@ class FirebaseControllerTest {
     }
 
     @SuppressWarnings("null")
-@Test
+    @Test
     void testSendMessageWithValidAuthorization() throws Exception {
         FcmMessageRequestMessage requestMessage = FcmMessageRequestMessage.builder()
                 .token("valid_token")
@@ -84,7 +84,7 @@ class FirebaseControllerTest {
     }
 
     @SuppressWarnings("null")
-@Test
+    @Test
     void testSendMessageWithInvalidAuthorization() throws Exception {
         FcmMessageRequestMessage requestMessage = FcmMessageRequestMessage.builder()
                 .token("valid_token")
@@ -105,7 +105,7 @@ class FirebaseControllerTest {
     }
 
     @SuppressWarnings("null")
-@Test
+    @Test
     void testSendMessageWithInvalidRequestBody() throws Exception {
         mockMvc.perform(post("/fcm/messages:send")
                         .header("Authorization", "Bearer keycloak_push_mfa_simulator_valid_assertion")

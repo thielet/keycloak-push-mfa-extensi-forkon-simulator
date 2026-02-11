@@ -113,7 +113,11 @@ onReady(() => {
         outEl.textContent = 'invalid enrollment token payload';
         return;
       }
-      const enrollmentJwt = await createEnrollmentJwt(enrollmentValues, _context, providerTypeEl.value.trim());
+      const enrollmentJwt = await createEnrollmentJwt(
+        enrollmentValues,
+        _context,
+        providerTypeEl.value.trim()
+      );
       const keycloakResponse = await postEnrollComplete(enrollmentJwt, _iamUrl as URL, _token);
 
       if (!keycloakResponse.ok) {

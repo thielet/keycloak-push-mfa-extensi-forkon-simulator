@@ -157,8 +157,7 @@ public class ConfirmController {
             }
             String loginPendingUrl = iamUrl + LOGIN_PENDING_ENDPOINT;
             // Get pending challenges
-            String pendingUrl =
-                    loginPendingUrl + "?userId=" + URLEncoder.encode(userId, StandardCharsets.UTF_8);
+            String pendingUrl = loginPendingUrl + "?userId=" + URLEncoder.encode(userId, StandardCharsets.UTF_8);
             // RFC 9449: htu must exclude query and fragment parts (userId)
             String pendingDpop = createDpopJwt(credentialId, "GET", loginPendingUrl, privateJwk);
             JsonNode pendingJson = getPendingChallenges(pendingUrl, pendingDpop, accessToken);

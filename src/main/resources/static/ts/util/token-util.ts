@@ -52,7 +52,11 @@ export function unpackEnrollmentToken(token: string): EnrollmentValues | null {
   return { enrollmentId, nonce, userId, iss };
 }
 
-export async function createEnrollmentJwt(enrollmentValues: EnrollmentValues, context: string, providerType: string) {
+export async function createEnrollmentJwt(
+  enrollmentValues: EnrollmentValues,
+  context: string,
+  providerType: string
+) {
   const exp = Math.floor(Date.now() / 1000) + 300;
   const { privateKey, jwkPub } = await loadJwkFile();
 
