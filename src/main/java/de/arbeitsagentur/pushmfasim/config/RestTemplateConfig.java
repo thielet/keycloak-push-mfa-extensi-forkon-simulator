@@ -25,6 +25,7 @@ public class RestTemplateConfig implements RestTemplateCustomizer {
         return builder.customizers(this).build();
     }
 
+    @SuppressWarnings("null")
     @Override
     public void customize(RestTemplate restTemplate) {
         if (proxyConfig.getHttpHost() != null && proxyConfig.getHttpPort() != -1) {

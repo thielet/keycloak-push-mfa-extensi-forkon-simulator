@@ -42,7 +42,8 @@ class FirebaseControllerTest {
         when(sseService.createSseEmitter()).thenReturn(new SseEmitter());
     }
 
-    @Test
+    @SuppressWarnings("null")
+@Test
     void testGetTokenWithValidAssertion() throws Exception {
         mockMvc.perform(post("/fcm/token").param("assertion", "valid_assertion"))
                 .andExpect(status().isOk())
@@ -57,7 +58,8 @@ class FirebaseControllerTest {
         mockMvc.perform(post("/fcm/token").param("assertion", "")).andExpect(status().isUnauthorized());
     }
 
-    @Test
+    @SuppressWarnings("null")
+@Test
     void testSendMessageWithValidAuthorization() throws Exception {
         FcmMessageRequestMessage requestMessage = FcmMessageRequestMessage.builder()
                 .token("valid_token")
@@ -81,7 +83,8 @@ class FirebaseControllerTest {
                                 .build())));
     }
 
-    @Test
+    @SuppressWarnings("null")
+@Test
     void testSendMessageWithInvalidAuthorization() throws Exception {
         FcmMessageRequestMessage requestMessage = FcmMessageRequestMessage.builder()
                 .token("valid_token")
@@ -101,7 +104,8 @@ class FirebaseControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    @Test
+    @SuppressWarnings("null")
+@Test
     void testSendMessageWithInvalidRequestBody() throws Exception {
         mockMvc.perform(post("/fcm/messages:send")
                         .header("Authorization", "Bearer keycloak_push_mfa_simulator_valid_assertion")

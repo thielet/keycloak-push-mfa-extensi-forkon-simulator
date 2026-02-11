@@ -46,6 +46,7 @@ class SseServiceTest {
         assertTrue(emitters.contains(emitter2));
     }
 
+    @SuppressWarnings("null")
     @Test
     void sendMessageToAllEmitters_shouldSendToAllEmitters() throws Exception {
         FcmMessageRequestMessage request = new FcmMessageRequestMessage();
@@ -69,6 +70,7 @@ class SseServiceTest {
         verify(emitter2, times(1)).send(any(SseEmitter.SseEventBuilder.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void sendMessageToAllEmitters_withIOException_shouldLogError() throws Exception {
         // Create a spy emitter that will throw IOException

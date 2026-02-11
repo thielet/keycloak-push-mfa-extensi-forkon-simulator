@@ -24,6 +24,7 @@ public class SseService implements SmartLifecycle {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private boolean running = false;
 
+    @SuppressWarnings("null")
     public void sendMessageToAllEmitters(FcmMessageRequestMessage request) {
         executorService.execute(() -> {
             synchronized (emitters) {
@@ -93,7 +94,7 @@ public class SseService implements SmartLifecycle {
     }
 
     @Override
-    public void stop(Runnable callback) {
+    public void stop(@SuppressWarnings("null") Runnable callback) {
         new Thread(() -> {
                     try {
                         doShutdown();
