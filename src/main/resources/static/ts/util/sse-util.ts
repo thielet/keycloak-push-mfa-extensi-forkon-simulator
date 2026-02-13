@@ -24,6 +24,9 @@ export function initializeSseListener(): void {
     console.error('SSE error:', error);
   };
   sseEmitter.addEventListener('fcm-message', handleMessage);
+  sseEmitter.addEventListener('heartbeat', function () {
+    console.debug('SSE heartbeat received');
+  });
 }
 
 const handleMessage = (event: MessageEvent) => {

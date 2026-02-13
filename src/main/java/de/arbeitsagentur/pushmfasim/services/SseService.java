@@ -23,6 +23,8 @@ public class SseService implements SmartLifecycle {
     private final List<SseEmitter> emitters = new ArrayList<>();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private boolean running = false;
+    private static final long HEARTBEAT_INTERVAL_MS = 10000;
+    public static final long MESSAGE_SEND_TIMEOUT_MS = 360000;
 
     @SuppressWarnings("null")
     public void sendMessageToAllEmitters(FcmMessageRequestMessage request) {
@@ -48,7 +50,7 @@ public class SseService implements SmartLifecycle {
         if (!running) {
             return null;
         }
-        SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+        SseEmitter sseEmitter = new SseEmitter(MESSAGE_SEND_TIMEOUT_MS);
         sseEmitter.onCompletion(() -> removeEmitter(sseEmitter));
         sseEmitter.onTimeout(() -> removeEmitter(sseEmitter));
         synchronized (emitters) {
@@ -58,6 +60,34 @@ public class SseService implements SmartLifecycle {
         return sseEmitter;
     }
 
+    public void sendHeartbeat() {
+        executorService.execute(() -> {
+            while (running) {
+                synchronized (emitters) {
+                    for (SseEmitter emitter : emitters) {
+                        if (!running) {
+                            break;
+                        }
+                        try {
+                            emitter.send(SseEmitter.event().name("heartbeat").data("ping"));
+                        } catch (IOException e) {
+                            LOG.error("Error sending heartbeat to emitter: {}", e.getMessage());
+                        }
+                    }
+                }
+                try {
+                    Thread.sleep(HEARTBEAT_INTERVAL_MS);
+                } catch (InterruptedException e) {
+                    LOG.warn("Heartbeat thread interrupted, stopping heartbeat");
+                    break;
+                }
+            }
+
+            // work done, end thread
+            Thread.currentThread().interrupt();
+        });
+    }
+
     private void removeEmitter(SseEmitter emitter) {
         synchronized (emitters) {
             emitters.remove(emitter);
@@ -65,7 +95,7 @@ public class SseService implements SmartLifecycle {
     }
 
     private void doShutdown() {
-        running = true;
+        running = false;
         executorService.shutdown();
         try {
             if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
@@ -86,6 +116,7 @@ public class SseService implements SmartLifecycle {
     @Override
     public void start() {
         running = true;
+        sendHeartbeat();
     }
 
     @Override

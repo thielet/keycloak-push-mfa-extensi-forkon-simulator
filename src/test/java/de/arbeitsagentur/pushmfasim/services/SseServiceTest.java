@@ -7,6 +7,7 @@ import de.arbeitsagentur.pushmfasim.model.FcmMessageRequestMessage;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -21,12 +22,46 @@ class SseServiceTest {
         sseService.start();
     }
 
+    @AfterEach
+    void tearDown() {
+        sseService.stop();
+    }
+
+    @Test
+    void start_shouldSetRunningToTrue() throws Exception {
+        Field runningField = SseService.class.getDeclaredField("running");
+        runningField.setAccessible(true);
+        boolean runningValue = (boolean) runningField.get(sseService);
+
+        assertTrue(runningValue, "Running should be true after start");
+    }
+
+    @Test
+    void stop_shouldSetRunningToFalse() throws Exception {
+        sseService.stop();
+        Field runningField = SseService.class.getDeclaredField("running");
+        runningField.setAccessible(true);
+        boolean runningValue = (boolean) runningField.get(sseService);
+
+        assertFalse(runningValue, "Running should be false after stop");
+    }
+
+    @Test
+    void start_shouldStartHeartbeatThread() throws Exception {
+        // Spy on the SseService to verify that sendHeartbeat is called
+        SseService spyService = spy(sseService);
+        spyService.start();
+
+        // Verify that sendHeartbeat was called once during start
+        verify(spyService, times(1)).sendHeartbeat();
+    }
+
     @Test
     void createSseEmitter_shouldReturnEmitterWithMaxTimeout() {
         SseEmitter emitter = sseService.createSseEmitter();
 
         assertNotNull(emitter);
-        assertEquals(Long.MAX_VALUE, emitter.getTimeout());
+        assertEquals(SseService.MESSAGE_SEND_TIMEOUT_MS, emitter.getTimeout());
     }
 
     @Test
