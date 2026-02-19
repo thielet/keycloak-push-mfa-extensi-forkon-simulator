@@ -5,7 +5,6 @@ declare global {
     ENV: {
       clientId: string;
       clientSecret: string;
-      basepath: string;
     };
   }
 }

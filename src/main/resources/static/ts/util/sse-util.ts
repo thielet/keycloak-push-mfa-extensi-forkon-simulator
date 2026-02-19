@@ -74,7 +74,18 @@ export function onNotificationClicked(token: string, notification: Element) {
   if (pushMessagesContainer) {
     pushMessagesContainer.removeChild(notification);
   }
-  // const path = document.getElementById('basepath')?.getAttribute('value') || '';
-  const path = window.ENV.basepath || '';
-  window.location.href = path + 'confirm?token=' + token;
+  // Redirect to confirmation page with token as query parameter
+  const currentPath = window.location.pathname;
+  let path = '';
+  if (currentPath.endsWith('/')) {
+    path = currentPath + 'confirm';
+  }
+  if (currentPath.endsWith('/enroll')) {
+    path = currentPath.replace('/enroll', '/confirm');
+  }
+  if (currentPath.endsWith('/confirm')) {
+    path = currentPath;
+  }
+  const baseUrl = window.location.protocol + '//' + window.location.host;
+  window.location.href = baseUrl + path + '?token=' + token;
 }
