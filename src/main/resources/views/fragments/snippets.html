@@ -17,6 +17,10 @@
       window.ENV.clientSecret = clientSecret;
       const sseFlag = /*[[${sseFlag}]]*/ 'enabled';
       window.ENV.sseFlag = sseFlag;
+      const providerIds = /*[[${providerIds}]]*/ "log";
+      window.ENV.providerIds = providerIds.split(',');
+      const localhostReplacement = /*[[${localhostReplacement}]]*/ '';
+      window.ENV.localhostReplacement = localhostReplacement;
     </script>
   </head>
   <body>

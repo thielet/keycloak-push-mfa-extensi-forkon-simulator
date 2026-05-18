@@ -85,6 +85,7 @@ public class EnrollController {
         if (iamUrl == null || iamUrl.isEmpty()) {
             iamUrl = defaultIamUrl;
         }
+
         logger.debug("Using IAM URL: {}", iamUrl);
         logger.trace("Parsing enrollment token");
         JWT jwt = JWTParser.parse(token);

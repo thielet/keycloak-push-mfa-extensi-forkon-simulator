@@ -14,10 +14,14 @@ app:
     title: 'PushMFA-Simulator'
   env: 'dev'
   # Default client credentials for device client defined in keycloak
-  clientId: 'push-device-client'
-  clientSecret: 'device-client-secret'
+  clientId: ${APP_CLIENTID:push-device-client}
+  clientSecret: ${APP_CLIENTSECRET:device-client-secret}
   # Flag to disable SSE e.g. for last testing purposes
-  sseFlag: 'enabled'
+  sseFlag: ${APP_SSEFLAG:enabled}
+  # Default provider IDs for select options in the UI
+  providerIds: ${APP_PROVIDERIDS:log,fcm,none}
+  # url replacement for "localhost"
+  localhostReplacement: ${APP_LOCALHOSTREPLACEMENT:}
 
 server:
   port: 5000

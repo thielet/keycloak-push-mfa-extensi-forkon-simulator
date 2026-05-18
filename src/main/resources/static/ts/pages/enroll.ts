@@ -62,7 +62,13 @@ onReady(() => {
       try {
         const enrollmentValues = unpackEnrollmentToken(token);
         if (enrollmentValues?.iss) {
-          iamUrlEl.value = enrollmentValues.iss;
+          const url = enrollmentValues.iss;
+          // Replace "localhost" with the configured replacement if necessary
+          if (url.includes("localhost") && window.ENV.localhostReplacement) {
+            iamUrlEl.value = url.replace(/localhost/g, window.ENV.localhostReplacement);
+          } else {
+            iamUrlEl.value = enrollmentValues.iss;
+          }
         }
       } catch (e) {
         console.error('Error parsing token for issuer:', e);
@@ -75,6 +81,15 @@ onReady(() => {
 
   // Extract issuer from token on page load
   updateIamUrlFromToken();
+
+  // Fill provider type options from server-provided list
+  const providerIds = window.ENV.providerIds || "[]";
+  providerIds.forEach((providerId) => {
+    const option = document.createElement('option');
+    option.value = providerId;
+    option.textContent = providerId;
+    providerTypeEl.appendChild(option);
+  });
 
   // Update iamUrl when token is changed
   tokenEl.addEventListener('change', updateIamUrlFromToken);

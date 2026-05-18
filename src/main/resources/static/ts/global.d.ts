@@ -5,6 +5,9 @@ declare global {
     ENV: {
       clientId: string;
       clientSecret: string;
+      sseFlag: string;
+      providerIds: string[];
+      localhostReplacement: string;
     };
   }
 }

@@ -36,7 +36,13 @@ onReady(() => {
       try {
         const confirmTokenValues = unpackLoginConfirmToken(token);
         if (confirmTokenValues?.iss) {
-          iamUrlEl.value = confirmTokenValues.iss;
+          const url = confirmTokenValues.iss;
+          // Replace "localhost" with the configured replacement if necessary
+          if (url.includes("localhost") && window.ENV.localhostReplacement) {
+            iamUrlEl.value = url.replace(/localhost/g, window.ENV.localhostReplacement);
+          } else {
+            iamUrlEl.value = confirmTokenValues.iss;
+          }
         }
       } catch (e) {
         console.error('Error extracting issuer from token:', e);
